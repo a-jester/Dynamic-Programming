@@ -17,6 +17,17 @@
 
 long long lookup[MAX];
 
+int calculate_percentage_difference(double timeA, double timeB)
+{
+	/*
+	 *    |V1−V2|
+	 *  ----------- x 100 = percentage difference
+	 *  [(V1+V2)/2]
+	 * 
+	 */
+	return ((timeA - timeB) / ((timeA + timeB) / 2)) * 100;
+}
+
 double get_fibonacci_time(size_t (*fib_ptr)(size_t), size_t index)
 {
 	clock_t start, end;
@@ -71,19 +82,29 @@ void initialize()
 
 int main(void)
 {
-	double total_time;
+	double naive_time, arr_time, memo_time;
+	double percentage_change;
 	time_t t;
 	srand((unsigned) time(&t));
 
-	total_time = get_fibonacci_time(naive_fib, FIB_IDX);
-	printf("naive_fib(%d) took %f seconds to execute \n\n", FIB_IDX, total_time);
+	naive_time = get_fibonacci_time(naive_fib, FIB_IDX);
+	printf("naive_fib(%d) took %f seconds to execute \n\n", FIB_IDX, naive_time);
 
-	total_time = get_fibonacci_time(arr_fib, FIB_IDX);
-	printf("arr_fib(%d) took %f seconds to execute \n\n", FIB_IDX, total_time);
+	arr_time = get_fibonacci_time(arr_fib, FIB_IDX);
+	printf("arr_fib(%d) took %f seconds to execute \n\n", FIB_IDX, arr_time);
 
 	initialize();
-	total_time = get_fibonacci_time(memo_fib, FIB_IDX);
-	printf("memo_fib(%d) took %f seconds to execute \n\n", FIB_IDX, total_time);
+	memo_time = get_fibonacci_time(memo_fib, FIB_IDX);
+	printf("memo_fib(%d) took %f seconds to execute \n\n", FIB_IDX, memo_time);
+
+	percentage_change = calculate_percentage_difference(naive_time, arr_time);
+	printf("[+] naive -> array = ~%.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+
+	percentage_change = calculate_percentage_difference(naive_time, memo_time);
+	printf("[+] naive -> memo = ~%.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+
+	percentage_change = calculate_percentage_difference(arr_time, memo_time);
+	printf("[+] array -> memo = ~%.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
 
 	return 0;
 }
