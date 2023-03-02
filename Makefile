@@ -1,5 +1,5 @@
 # Target Variables
-BASENAME = memo
+BASENAME = dynamic_demo
 EXTENSION = .elf
 TARGET = $(BASENAME)$(EXTENSION)
 
@@ -24,7 +24,7 @@ ASFLAGS =
 LDLIBS =
 
 # Source files
-SOURCES = memoization_demo.c
+SOURCES = dynamic_demo.c
 
 # Additional variables
 OBJS = $(SOURCES:.c=.o)

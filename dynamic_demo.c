@@ -13,8 +13,7 @@
 
 #define NIL -1
 #define MAX 1000000
-#define FIB_IDX 50
-#define FIB_LARGE 100
+#define FIB_IDX 10
 
 long long lookup[MAX];
 
@@ -39,7 +38,7 @@ double get_fibonacci_time(size_t (*fib_ptr)(size_t), size_t index)
 }
 
 // Dynamic Programming - Tabulation
-size_t arr_fib(size_t n)
+size_t tabulation_fib(size_t n)
 {
 	size_t *arr = (size_t *)calloc(n+1, sizeof(size_t));
 	size_t ans;
@@ -55,23 +54,23 @@ size_t arr_fib(size_t n)
 }
 
 // Recursive - exponential
-size_t naive_fib(size_t n) {
+size_t recursive_fib(size_t n) {
 	if (n == 0 || n == 1) {
 		return 1;
 	} else {
-		return naive_fib(n-1) + naive_fib(n-2);
+		return recursive_fib(n-1) + recursive_fib(n-2);
 	}
 }
 
 // Dynamic Programming - Memoization - Top Down recursion and caching
-size_t memo_fib(size_t n)
+size_t memoization_fib(size_t n)
 {
 
 	if (lookup[n] == NIL){
 		if (n == 0 || n == 1)
 			return 1;
 		else
-			lookup[n] = memo_fib(n - 1) + memo_fib(n - 2);
+			lookup[n] = memoization_fib(n - 1) + memoization_fib(n - 2);
 	}
 	return lookup[n];
 }
@@ -85,29 +84,29 @@ void initialize()
 
 int main(void)
 {
-	double naive_time, arr_time, memo_time;
+	double recursive_time, tabulation_time, memoization_time;
 	double percentage_change;
 	time_t t;
 	srand((unsigned) time(&t));
 
-	naive_time = get_fibonacci_time(naive_fib, FIB_IDX);
-	printf("naive_fib(%d) took %f seconds to execute \n\n", FIB_IDX, naive_time);
+	recursive_time = get_fibonacci_time(recursive_fib, FIB_IDX);
+	printf("recursive_fib(%d) took %f seconds to execute \n\n", FIB_IDX, recursive_time);
 
-	arr_time = get_fibonacci_time(arr_fib, FIB_IDX);
-	printf("arr_fib(%d) took %f seconds to execute \n\n", FIB_IDX, arr_time);
+	tabulation_time = get_fibonacci_time(tabulation_fib, FIB_IDX);
+	printf("tabulation_fib(%d) took %f seconds to execute \n\n", FIB_IDX, tabulation_time);
 
 	initialize();
-	memo_time = get_fibonacci_time(memo_fib, FIB_IDX);
-	printf("memo_fib(%d) took %f seconds to execute \n\n", FIB_IDX, memo_time);
+	memoization_time = get_fibonacci_time(memoization_fib, FIB_IDX);
+	printf("memoization_fib(%d) took %f seconds to execute \n\n", FIB_IDX, memoization_time);
 
-	percentage_change = calculate_percentage_difference(naive_time, arr_time);
-	printf("[+] naive -> array ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+	percentage_change = calculate_percentage_difference(recursive_time, tabulation_time);
+	printf("[+] recursion -> tabulation ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
 
-	percentage_change = calculate_percentage_difference(naive_time, memo_time);
-	printf("[+] naive -> memo ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+	percentage_change = calculate_percentage_difference(recursive_time, memoization_time);
+	printf("[+] recursion -> memoization ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
 
-	percentage_change = calculate_percentage_difference(arr_time, memo_time);
-	printf("[+] array -> memo ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+	percentage_change = calculate_percentage_difference(memoization_time, tabulation_time);
+	printf("[+] memoization -> tabulation ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
 
 	return 0;
 }
