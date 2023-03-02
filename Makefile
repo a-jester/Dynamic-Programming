@@ -6,7 +6,7 @@ TARGET = $(BASENAME)$(EXTENSION)
 # Compiler Flags and Defines
 CC = gcc
 LD = 
-LDFLAGS = 
+LDFLAGS = -lm
 
 # CFLAGS ---------------------------------------------------------------------
 # -Wall     - Turn on all warnings covered by -Wall

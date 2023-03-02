@@ -11,21 +11,23 @@
 #include <stdio.h>
 #include <time.h>
 
+#include <math.h>
+
 #define NIL -1
 #define MAX 1000000
 #define FIB_IDX 10
 
 long long lookup[MAX];
 
-int calculate_percentage_difference(double timeA, double timeB)
+int calculate_percentage_change(double initial, double final)
 {
 	/*
-	 *    |V1−V2|
-	 *  ----------- x 100 = percentage difference
-	 *  [(V1+V2)/2]
+	 *    V2-V1
+	 *  ----------- x 100 = percentage change
+	 *     |V1|
 	 * 
 	 */
-	return ((timeA - timeB) / ((timeA + timeB) / 2)) * 100;
+	return ((final - initial) / initial) * 100;
 }
 
 double get_fibonacci_time(size_t (*fib_ptr)(size_t), size_t index)
@@ -99,14 +101,14 @@ int main(void)
 	memoization_time = get_fibonacci_time(memoization_fib, FIB_IDX);
 	printf("memoization_fib(%d) took %f seconds to execute \n\n", FIB_IDX, memoization_time);
 
-	percentage_change = calculate_percentage_difference(recursive_time, tabulation_time);
-	printf("[+] recursion -> tabulation ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+	percentage_change = calculate_percentage_change(recursive_time, tabulation_time);
+	printf("[+] recursion   -> tabulation  ~= %d%% %s\n", abs(percentage_change), (percentage_change > 0 ? "slower" : "faster"));
 
-	percentage_change = calculate_percentage_difference(recursive_time, memoization_time);
-	printf("[+] recursion -> memoization ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+	percentage_change = calculate_percentage_change(recursive_time, memoization_time);
+	printf("[+] recursion   -> memoization ~= %d%% %s\n", abs(percentage_change), (percentage_change > 0 ? "slower" : "faster"));
 
-	percentage_change = calculate_percentage_difference(memoization_time, tabulation_time);
-	printf("[+] memoization -> tabulation ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+	percentage_change = calculate_percentage_change(memoization_time, tabulation_time);
+	printf("[+] memoization -> tabulation  ~= %d%% %s\n", abs(percentage_change), (percentage_change > 0 ? "slower" : "faster"));
 
 	return 0;
 }
