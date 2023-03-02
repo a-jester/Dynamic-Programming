@@ -1,12 +1,12 @@
 # Target Variables
-BASENAME = memo
+BASENAME = dynamic_demo
 EXTENSION = .elf
 TARGET = $(BASENAME)$(EXTENSION)
 
 # Compiler Flags and Defines
 CC = gcc
 LD = 
-LDFLAGS = 
+LDFLAGS = -lm
 
 # CFLAGS ---------------------------------------------------------------------
 # -Wall     - Turn on all warnings covered by -Wall
@@ -24,7 +24,7 @@ ASFLAGS =
 LDLIBS =
 
 # Source files
-SOURCES = memoization_demo.c
+SOURCES = dynamic_demo.c
 
 # Additional variables
 OBJS = $(SOURCES:.c=.o)
