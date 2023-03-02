@@ -13,7 +13,8 @@
 
 #define NIL -1
 #define MAX 1000000
-#define FIB_IDX 10
+#define FIB_IDX 50
+#define FIB_LARGE 100
 
 long long lookup[MAX];
 
@@ -37,7 +38,7 @@ double get_fibonacci_time(size_t (*fib_ptr)(size_t), size_t index)
 	return ((double) (end - start)) / CLOCKS_PER_SEC;
 }
 
-// Dynamic
+// Dynamic Programming - Tabulation
 size_t arr_fib(size_t n)
 {
 	size_t *arr = (size_t *)calloc(n+1, sizeof(size_t));
@@ -53,6 +54,7 @@ size_t arr_fib(size_t n)
 	return ans;
 }
 
+// Recursive - exponential
 size_t naive_fib(size_t n) {
 	if (n == 0 || n == 1) {
 		return 1;
@@ -61,6 +63,7 @@ size_t naive_fib(size_t n) {
 	}
 }
 
+// Dynamic Programming - Memoization - Top Down recursion and caching
 size_t memo_fib(size_t n)
 {
 
@@ -98,13 +101,13 @@ int main(void)
 	printf("memo_fib(%d) took %f seconds to execute \n\n", FIB_IDX, memo_time);
 
 	percentage_change = calculate_percentage_difference(naive_time, arr_time);
-	printf("[+] naive -> array = ~%.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+	printf("[+] naive -> array ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
 
 	percentage_change = calculate_percentage_difference(naive_time, memo_time);
-	printf("[+] naive -> memo = ~%.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+	printf("[+] naive -> memo ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
 
 	percentage_change = calculate_percentage_difference(arr_time, memo_time);
-	printf("[+] array -> memo = ~%.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
+	printf("[+] array -> memo ~= %.0f%% %s\n", percentage_change, (percentage_change < 0 ? "slower" : "faster"));
 
 	return 0;
 }
